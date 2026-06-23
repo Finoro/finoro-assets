@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kein Lärm — Digitale Entgiftung</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --black: #080808;
+    --dark: #111;
+    --gold: #c8a96e;
+    --gold-light: #e8d5a8;
+    --gold-dim: rgba(200,169,110,0.15);
+    --cream: #f0ece4;
+    --grey: #666;
+    --muted: #444;
+    --line: #1e1e1e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ──────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: rgba(8,8,8,0.9);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .nav-claim {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+  }
+
+  /* ── HERO ─────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 40px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: fixed;
+    top: 0; right: 0;
+    width: 40vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at 80% 50%, rgba(200,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(44px, 7vw, 88px);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  .hero-premise {
+    max-width: 540px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #a09890;
+    margin-bottom: 56px;
+    border-left: 2px solid var(--gold);
+    padding-left: 24px;
+  }
+
+  /* ── FORM ─────────────────────────────── */
+  .form-block {
+    max-width: 480px;
+  }
+
+  .form-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--muted);
+    transition: border-color 0.2s;
+  }
+
+  .input-row:focus-within {
+    border-color: var(--gold);
+  }
+
+  .input-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    color: var(--cream);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .input-row input::placeholder {
+    color: var(--muted);
+  }
+
+  .btn-submit {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .btn-submit:hover { background: var(--gold-light); }
+
+  .form-fine {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* Success state */
+  .success-msg {
+    display: none;
+    padding: 20px 24px;
+    border: 1px solid var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .success-msg.visible { display: block; }
+
+  .success-msg p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+
+  /* ── DIVIDER ──────────────────────────── */
+  .divider {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── WHAT YOU GET ─────────────────────── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .section-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .content-item {
+    background: var(--dark);
+    padding: 32px;
+    border: 1px solid var(--line);
+  }
+
+  .item-day {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .item-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--cream);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .item-desc {
+    font-size: 13px;
+    color: #706860;
+    line-height: 1.6;
+  }
+
+  /* ── PROOF ────────────────────────────── */
+  .proof {
+    background: var(--dark);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .proof-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .stat {
+    border-left: 1px solid var(--gold);
+    padding-left: 24px;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+
+  /* ── PRINCIPLES ───────────────────────── */
+  .principles-block {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .principle {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .principle:first-of-type { border-top: 1px solid var(--line); }
+
+  .p-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    padding-top: 4px;
+    letter-spacing: 0.1em;
+  }
+
+  .p-content {}
+
+  .p-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: var(--cream);
+  }
+
+  .p-text {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ── BOTTOM CTA ───────────────────────── */
+  .bottom-cta {
+    background: var(--dark);
+    border-top: 1px solid var(--gold);
+  }
+
+  .bottom-cta-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .cta-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .cta-left h2 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .cta-left p {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ───────────────────────────── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .footer-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ───────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag   { animation: fadeUp 0.6s ease 0.1s both; }
+  .hero h1    { animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-sub   { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-premise { animation: fadeUp 0.6s ease 0.4s both; }
+  .form-block { animation: fadeUp 0.6s ease 0.5s both; }
+
+  /* ── RESPONSIVE ───────────────────────── */
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-claim { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    .section { padding: 60px 20px; }
+    .content-grid { grid-template-columns: 1fr; }
+    .proof-inner { grid-template-columns: 1fr; gap: 32px; padding: 60px 20px; }
+    .bottom-cta-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+    .principles-block { padding: 60px 20px; }
+    footer { padding: 20px; flex-direction: column; gap: 16px; text-align: center; }
+    .input-row { flex-direction: column; }
+    .btn-submit { padding: 14px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Kein Lärm</div>
+  <div class="nav-claim">Systemische Disziplin für High-Performer</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Kostenloses Framework</div>
+  <h1>Deine Aufmerksamkeit<br>gehört <em>dir.</em></h1>
+  <div class="hero-sub">7-Tage Plan zur Digitalen Entgiftung — kostenlos</div>
+  <p class="hero-premise">
+    Jede App, jede Benachrichtigung, jeder Feed ist darauf optimiert, deine Aufmerksamkeit zu stehlen. Willenskraft ist keine Lösung. Systeme schon.
+  </p>
+
+  <div class="form-block">
+    <div class="form-label">Deine E-Mail-Adresse</div>
+    <div class="input-row">
+      <input type="email" id="email-input" placeholder="du@beispiel.de" autocomplete="email">
+      <button class="btn-submit" onclick="handleSubmit()">Jetzt holen</button>
+    </div>
+    <div class="form-fine">Kein Spam. Kein Verkauf. Nur Signal.</div>
+  </div>
+
+  <div class="success-msg" id="success-msg">
+    <p>Bestätige deine E-Mail — der Plan landet direkt in deinem Postfach.<br>Kein Lärm. Nur der Plan.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHAT YOU GET -->
+<section class="section">
+  <div class="section-tag">Was du bekommst</div>
+  <div class="content-grid">
+    <div class="content-item">
+      <div class="item-day">Tag 1 — Inventar</div>
+      <div class="item-title">Messe den Schaden</div>
+      <div class="item-desc">Bevor du änderst, misst du. Ein Blick auf deine Screen-Time ohne Urteil — nur Daten.</div>
+    </div>
+    <div class="content-item">
+      <div class="item-day">Tag 2 — Reduktion</div>
+      <div class="item-title">Lösche was du nicht vermisst</div>
+      <div class="item-desc">Nicht jede App die du nutzt, brauchst du wirklich. Klarheit durch Subtraktion.</div>
+    </div>
+    <div class="content-item">
+      <div class="item-day">Tag 3 — Zeitfenster</div>
+      <div class="item-title">Definiere wann, nicht ob</div>
+      <div class="item-desc">Zwei feste Slots für Social Media. Kein ständiges Prüfen. Kontrolle durch Struktur.</div>
+    </div>
+    <div class="content-item">
+      <div class="item-day">Tag 4–7</div>
+      <div class="item-title">Tiefarbeit. Umgebung. Stille. System.</div>
+      <div class="item-desc">Schütze dein bestes Zeitfenster. Baue Reibung gegen Ablenkung. Halte die Stille aus. Mach es dauerhaft.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<div class="proof">
+  <div class="proof-inner">
+    <div class="stat">
+      <div class="stat-num">3.2h</div>
+      <div class="stat-label">Durchschnittliche tägliche Social-Media-Nutzung in Deutschland (2024)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">23'</div>
+      <div class="stat-label">So lange dauert es nach einer Ablenkung, um wieder in Tiefarbeit zu kommen</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Tage bis dein Gehirn beginnt, Langeweile als Ressource statt Bedrohung zu lesen</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+<div class="principles-block">
+  <div class="section-tag">Die Grundsätze</div>
+
+  <div class="principle">
+    <div class="p-num">01</div>
+    <div class="p-content">
+      <div class="p-title">Willenskraft ist endlich. Systeme nicht.</div>
+      <p class="p-text">Ablenkung zu widerstehen kostet kognitive Energie. Diese Energie fehlt dann für das was zählt. Baue stattdessen Umgebungen die Ablenkung strukturell unmöglich machen.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="p-num">02</div>
+    <div class="p-content">
+      <div class="p-title">Was du nicht misst, kontrollierst du nicht.</div>
+      <p class="p-text">Screen-Time ist keine Schande — sie ist Daten. Wer nicht weiss wo seine Zeit hingeht, kann sie nicht zurückholen. Messen ist der erste Akt der Souveränität.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="p-num">03</div>
+    <div class="p-content">
+      <div class="p-title">Langeweile ist keine Schwäche.</div>
+      <p class="p-text">Sie ist der Zustand in dem dein bestes Denken entsteht. Wer Langeweile nie aushält, denkt nie wirklich. Schütze sie wie deine produktivste Stunde — weil sie das ist.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="bottom-cta-inner">
+    <div class="cta-left">
+      <h2>Hol dir den Plan.<br><em>Kostenlos.</em></h2>
+      <p>Ein Framework. Eine Checkliste. Sieben Tage. Kein Upsell, kein Funnel, kein Lärm.</p>
+    </div>
+    <div class="form-block">
+      <div class="form-label">Deine E-Mail-Adresse</div>
+      <div class="input-row">
+        <input type="email" id="email-input-2" placeholder="du@beispiel.de" autocomplete="email">
+        <button class="btn-submit" onclick="handleSubmit2()">Jetzt holen</button>
+      </div>
+      <div class="form-fine">Double Opt-in. Kein Spam. Abmeldung jederzeit.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Kein Lärm</div>
+  <div class="footer-links">
+    <a href="https://threads.net/@kein.laerm">Threads</a>
+    <a href="https://instagram.com/kein.laerm">Instagram</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/impressum">Impressum</a>
+  </div>
+</footer>
+
+<script>
+// ── Config ─────────────────────────────────────────────────
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbx19_5Fvsu_uGDWiLCZlhW0yeUfL0I6uHTmxQkrRMGqLGqdVblHTXVCxY67ZteSD3wh/exec';   // nach GAS-Deploy eintragen
+
+// ── Core submit function ─────────────────────────────────────
+async function submitEmail(email, inputEl, formEl) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    inputEl.style.outline = '1px solid #c84a4a';
+    inputEl.focus();
+    return;
+  }
+
+  // Optimistic UI
+  const btn = inputEl.nextElementSibling;
+  const originalText = btn.textContent;
+  btn.textContent = '...';
+  btn.disabled = true;
+  inputEl.disabled = true;
+
+  try {
+    // GAS Web Apps erfordern no-cors — kein Response-Body verfügbar
+    await fetch(WEBAPP_URL, {
+      method : 'POST',
+      mode   : 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({
+        email : email.trim().toLowerCase(),
+        source: window.location.href
+      })
+    });
+
+    // no-cors liefert immer opaque response — Success UI zeigen
+    if (formEl) {
+      formEl.innerHTML = `
+        <div style="border:1px solid #c8a96e;background:rgba(200,169,110,0.08);padding:20px 24px;">
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#e8d5a8;
+             letter-spacing:0.1em;line-height:1.6;margin:0;">
+            Bestätige deine E-Mail —<br>der Plan wartet in deinem Postfach.
+          </p>
+        </div>
+      `;
+    }
+
+  } catch (err) {
+    // Network error — silent fail with positive message
+    btn.textContent = 'Bestätigung unterwegs';
+    btn.disabled = true;
+    console.error('Submit error:', err);
+  }
+}
+
+function handleSubmit() {
+  const input = document.getElementById('email-input');
+  const form  = document.querySelector('.hero .form-block');
+  submitEmail(input.value, input, form);
+}
+
+function handleSubmit2() {
+  const input = document.getElementById('email-input-2');
+  const form  = document.querySelector('.bottom-cta .form-block');
+  submitEmail(input.value, input, form);
+}
+
+document.getElementById('email-input').addEventListener('keypress', e => {
+  if (e.key === 'Enter') handleSubmit();
+});
+document.getElementById('email-input-2').addEventListener('keypress', e => {
+  if (e.key === 'Enter') handleSubmit2();
+});
+</script>
+
+</body>
+</html>

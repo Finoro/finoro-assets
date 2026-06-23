@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kein Lärm — Bestätigt</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400&display=swap');
+
+  :root {
+    --black : #080808;
+    --dark  : #111;
+    --gold  : #c8a96e;
+    --cream : #f0ece4;
+    --grey  : #666;
+    --line  : #1e1e1e;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .card {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  /* Status icon */
+  .status-icon {
+    width: 72px;
+    height: 72px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 28px;
+  }
+
+  .status-icon.error {
+    border-color: #c84a4a;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--grey);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 40px 0;
+  }
+
+  /* Next steps */
+  .steps {
+    text-align: left;
+    margin-bottom: 40px;
+  }
+
+  .steps-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    min-width: 20px;
+    padding-top: 3px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: #a09890;
+    line-height: 1.6;
+  }
+
+  .step-text strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* Social links */
+  .social {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .social-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 12px 20px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .social-link:hover {
+    border-color: var(--gold);
+    background: rgba(200,169,110,0.05);
+  }
+
+  .fine {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: #333;
+    letter-spacing: 0.1em;
+  }
+
+  /* State variations */
+  .state-confirmed  .status-icon::after { content: '✓'; }
+  .state-resent     .status-icon::after { content: '✉'; }
+  .state-expired    .status-icon::after { content: '⏱'; }
+  .state-invalid    .status-icon.error::after { content: '✕'; }
+  .state-error      .status-icon.error::after { content: '!'; }
+  .state-already    .status-icon::after { content: '✓'; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .card { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<div class="card" id="content">
+  <!-- Content injected by JS based on ?status param -->
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const status = params.get('status') || 'confirmed';
+
+const states = {
+  confirmed: {
+    cls     : 'state-confirmed',
+    iconCls : '',
+    title   : 'Bestätigt.<br><em>Dein Plan ist da.</em>',
+    subtitle: 'Lade den 7-Tage Plan direkt herunter — er ist für die analoge Welt gebaut.',
+    steps   : [
+      { n:'01', text: '<strong>Plan herunterladen</strong> — Button unten. Ausdrucken oder als PDF speichern.' },
+      { n:'02', text: '<strong>Heute mit Tag 1 starten</strong> — nicht morgen. 10 Minuten reichen.' },
+      { n:'03', text: '<strong>Folge uns</strong> — tägliche Impulse auf Threads und Instagram.' }
+    ],
+    showSocial: true,
+    showDownload: true
+  },
+  already_confirmed: {
+    cls     : 'state-already',
+    iconCls : '',
+    title   : 'Bereits bestätigt.',
+    subtitle: 'Diese E-Mail ist schon in unserer Liste. Schau in dein Postfach — der Plan wurde bereits verschickt.',
+    steps   : [],
+    showSocial: true
+  },
+  confirmation_resent: {
+    cls     : 'state-resent',
+    iconCls : '',
+    title   : 'Nochmal geschickt.',
+    subtitle: 'Wir haben dir eine neue Bestätigungs-E-Mail geschickt. Diesmal nicht verpassen.',
+    steps   : [
+      { n:'01', text: '<strong>Postfach öffnen</strong> — die E-Mail ist soeben verschickt worden.' },
+      { n:'02', text: '<strong>Spam prüfen</strong> — manchmal landet sie dort. Als "Kein Spam" markieren.' }
+    ],
+    showSocial: false
+  },
+  expired: {
+    cls     : 'state-expired',
+    iconCls : '',
+    title   : 'Link abgelaufen.',
+    subtitle: 'Bestätigungs-Links sind 48 Stunden gültig. Trag dich nochmal ein — wir schicken dir einen neuen.',
+    steps   : [],
+    showSocial: false,
+    showBack: true
+  },
+  invalid: {
+    cls     : 'state-invalid',
+    iconCls : 'error',
+    title   : 'Ungültiger Link.',
+    subtitle: 'Dieser Bestätigungs-Link ist ungültig. Trag dich nochmal ein oder schreib uns.',
+    steps   : [],
+    showSocial: false,
+    showBack: true
+  },
+  error: {
+    cls     : 'state-error',
+    iconCls : 'error',
+    title   : 'Etwas ist schief gelaufen.',
+    subtitle: 'Bitte versuch es nochmal oder schreib uns direkt.',
+    steps   : [],
+    showSocial: false,
+    showBack: true
+  }
+};
+
+const s = states[status] || states.confirmed;
+
+let stepsHtml = '';
+if (s.steps.length > 0) {
+  stepsHtml = `
+    <div class="steps">
+      <div class="steps-label">Nächste Schritte</div>
+      ${s.steps.map(step => `
+        <div class="step">
+          <div class="step-num">${step.n}</div>
+          <div class="step-text">${step.text}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+const downloadHtml = s.showDownload ? `
+  <div style="margin-bottom:32px;">
+    <a href="https://go.finoro.ch/freebie.pdf"
+       style="display:inline-block;background:#c8a96e;color:#080808;padding:16px 32px;
+              text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:11px;
+              letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">
+      Plan herunterladen →
+    </a>
+  </div>
+` : '';
+
+const socialHtml = s.showSocial ? `
+  <div class="social">
+    <a href="https://threads.net/@kein.laerm" class="social-link">Threads folgen</a>
+    <a href="https://instagram.com/kein.laerm" class="social-link">Instagram folgen</a>
+  </div>
+` : '';
+
+const backHtml = s.showBack ? `
+  <p style="margin-bottom:24px;">
+    <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#c8a96e;
+       letter-spacing:0.15em;text-decoration:none;">← Zurück zur Startseite</a>
+  </p>
+` : '';
+
+document.getElementById('content').className = `card ${s.cls}`;
+document.getElementById('content').innerHTML = `
+  <div class="brand">Kein Lärm</div>
+  <div class="status-icon ${s.iconCls}"></div>
+  <h1>${s.title}</h1>
+  <p class="subtitle">${s.subtitle}</p>
+  <div class="divider"></div>
+  ${stepsHtml}
+  ${downloadHtml}
+  ${socialHtml}
+  ${backHtml}
+  <p class="fine">threads.net/@kein.laerm · instagram.com/kein.laerm</p>
+`;
+</script>
+
+</body>
+</html>

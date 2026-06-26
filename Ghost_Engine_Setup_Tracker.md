@@ -107,6 +107,7 @@
 - Account unter Meta-Review seit 26.06.2026 — Freigabe erwartet 27.06.2026
 - Selfie-Verifizierung eingereicht
 - DB Schritte 1+2 bereits ausgeführt, Schritte 3+4 warten auf API-Tokens
+- SQL-Setup-Datei auf GitHub abgelegt
 
 ---
 
@@ -114,10 +115,10 @@
 
 | Feld | Wert |
 |---|---|
-| **setup_id** | ⏳ Noch nicht erstellt |
+| **setup_id** | `b3c1851d-a6c1-405d-bea4-02983d242e7c` |
 | **Slug** | `aufstiegmomentum` |
 | **Nische** | Energie & Momentum |
-| **Sub-Nische** | ⏳ Ausstehend |
+| **Sub-Nische** | Morgenenergie & täglicher Aufstieg |
 | **E-Mail** | aufstiegmomentum@finoro.ch |
 | **Instagram** | @aufstiegmomentum |
 | **Threads** | @aufstiegmomentum |
@@ -141,24 +142,27 @@
 ### Assets
 | Asset | URL | Status |
 |---|---|---|
-| Logo | ⏳ Ausstehend | — |
-| Background | ⏳ Ausstehend | — |
+| Logo | `raw.githubusercontent.com/Finoro/finoro-assets/main/aufstiegmomentum/assets/aufstiegmomentum-logo.png` | ✅ |
+| Background | `raw.githubusercontent.com/Finoro/finoro-assets/main/aufstiegmomentum/assets/background.png` | ✅ |
 
 ### Checkliste
-- [ ] Phase 1 — Planung
-- [ ] Phase 2 — Assets
-- [ ] Phase 3 — GitHub
+- [x] Phase 1 — Planung
+- [x] Phase 2 — Assets (Logo + Background)
+- [x] Phase 3 — GitHub
 - [ ] Phase 4 — Landingpage
 - [x] Phase 5 — Account-Erstellung ✅ Verifiziert
 - [ ] Phase 5 — Aufwärmphase (14+ Tage)
 - [ ] Phase 6 — Meta App & API-Zugang
-- [ ] Phase 7 — Datenbank
+- [x] Phase 7 — DB: setups ✅
+- [x] Phase 7 — DB: setup_configs ✅
+- [ ] Phase 7 — DB: platform_meta (nach API)
+- [ ] Phase 7 — DB: vault (nach API)
 - [ ] Phase 8 — Verifikation
 - [ ] Phase 9 — Aktivierung
 
 ### Notizen
 - Account erfolgreich erstellt und verifiziert (26.06.2026)
-- Phase 1 Planung ausstehend
+- SQL-Setup-Datei auf GitHub abgelegt
 
 ---
 
@@ -167,13 +171,14 @@
 | Priorität | Task | Setup |
 |---|---|---|
 | 🔴 | Meta-Review abwarten → Aufwärmphase starten | derstarkdenker |
-| 🔴 | Phase 1 Planung ausarbeiten | aufstiegmomentum |
+| 🔴 | Aufwärmphase starten (14+ Tage manuell) | aufstiegmomentum |
 | 🟡 | Landingpage erstellen | derstarkdenker |
-| 🟡 | Assets erstellen (Logo, Background) | aufstiegmomentum |
-| 🟡 | GitHub einrichten | aufstiegmomentum |
-| 🟡 | DB-Inserts vorbereiten | aufstiegmomentum |
-| 🟢 | API-Tokens beschaffen + Vault befüllen | derstarkdenker |
-| 🟢 | Facebook Pages erstellen | derstarkdenker + aufstiegmomentum |
+| 🟡 | Landingpage erstellen | aufstiegmomentum |
+| 🟡 | Facebook Pages erstellen | derstarkdenker + aufstiegmomentum |
+| 🟡 | API-Tokens beschaffen + Vault befüllen | derstarkdenker |
+| 🟡 | API-Tokens beschaffen + Vault befüllen | aufstiegmomentum |
+| 🟢 | DB: platform_meta + vault | derstarkdenker |
+| 🟢 | DB: platform_meta + vault | aufstiegmomentum |
 | 🟢 | Ghost Engine aktivieren | derstarkdenker |
 | 🟢 | Ghost Engine aktivieren | aufstiegmomentum |
 

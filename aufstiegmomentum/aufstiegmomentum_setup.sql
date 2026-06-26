@@ -46,7 +46,7 @@ INSERT INTO setup_configs (
   prime_topics,
   config_source
 ) VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   TRUE,
   'Kraftvoll, ermutigend, erdend, Per Du, keine Klichés',
   'Jeden Morgen neu starten — mit Energie, Klarheit und dem Willen aufzusteigen.',
@@ -112,7 +112,7 @@ SET platform_meta = jsonb_build_object(
   'instagram', jsonb_build_object('page_id', '<<INSTAGRAM_PAGE_ID>>'),
   'facebook',  jsonb_build_object('page_id', '<<FACEBOOK_PAGE_ID>>')
 )
-WHERE setup_id = '<<SETUP_ID>>'
+WHERE setup_id = 'b3c1851d-a6c1-405d-bea4-02983d242e7c'
   AND is_active = TRUE;
 
 
@@ -122,7 +122,7 @@ WHERE setup_id = '<<SETUP_ID>>'
 -- Instagram Access Token
 INSERT INTO vault (setup_id, platform, token_type, token_value, expires_at)
 VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   'instagram',
   'ACCESS_TOKEN',
   pgp_sym_encrypt('<<INSTAGRAM_ACCESS_TOKEN>>', current_setting('app.vault_key')),
@@ -132,7 +132,7 @@ VALUES (
 -- Facebook Access Token
 INSERT INTO vault (setup_id, platform, token_type, token_value, expires_at)
 VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   'facebook',
   'ACCESS_TOKEN',
   pgp_sym_encrypt('<<FACEBOOK_ACCESS_TOKEN>>', current_setting('app.vault_key')),
@@ -142,7 +142,7 @@ VALUES (
 -- Threads Access Token
 INSERT INTO vault (setup_id, platform, token_type, token_value, expires_at)
 VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   'threads',
   'ACCESS_TOKEN',
   pgp_sym_encrypt('<<THREADS_ACCESS_TOKEN>>', current_setting('app.vault_key')),
@@ -152,7 +152,7 @@ VALUES (
 -- Meta App ID
 INSERT INTO vault (setup_id, platform, token_type, token_value)
 VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   'facebook',
   'APP_ID',
   pgp_sym_encrypt('<<META_APP_ID>>', current_setting('app.vault_key'))
@@ -161,7 +161,7 @@ VALUES (
 -- Meta App Secret
 INSERT INTO vault (setup_id, platform, token_type, token_value)
 VALUES (
-  '<<SETUP_ID>>',
+  'b3c1851d-a6c1-405d-bea4-02983d242e7c',
   'facebook',
   'APP_SECRET',
   pgp_sym_encrypt('<<META_APP_SECRET>>', current_setting('app.vault_key'))
@@ -185,7 +185,7 @@ SELECT
   cta_headline,
   platform_meta
 FROM setup_configs
-WHERE setup_id = '<<SETUP_ID>>';
+WHERE setup_id = 'b3c1851d-a6c1-405d-bea4-02983d242e7c';
 
 -- Vault prüfen (nach Token-Eintrag)
 SELECT
@@ -194,5 +194,5 @@ SELECT
   expires_at,
   LEFT(pgp_sym_decrypt(token_value, current_setting('app.vault_key'))::TEXT, 15) AS token_preview
 FROM vault
-WHERE setup_id = '<<SETUP_ID>>'
+WHERE setup_id = 'b3c1851d-a6c1-405d-bea4-02983d242e7c'
 ORDER BY platform, token_type;
